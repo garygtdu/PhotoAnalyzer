@@ -16,24 +16,34 @@ for photofile in os.listdir("Photos"):
             photodata.append(exif_data)
 
 
-
-
-
 def exif_extractor(data: list):
 
     datalibrary = []
 
     for entry in data:
+
         individual_photo = {}
+
         for tag, value in entry.items():
             individual_photo[TAGS[tag]] = value
         datalibrary.append(individual_photo)
+
     return datalibrary
-            
+
 readable_data = exif_extractor(photodata)
-print(readable_data)
 
+# ISO
 
-    
-# each item in photodata is a DICT
-# TAGS[this is where the values go]; TAGS is a dictionary 
+def ISO_finder(readable_data: list):
+
+    individual_ISO = []
+
+    for entry in readable_data:
+        
+        individual_ISO.append(entry['ISOSpeedRatings'])
+
+    return individual_ISO
+
+ISO_data = ISO_finder(readable_data)
+print(ISO_data)
+
