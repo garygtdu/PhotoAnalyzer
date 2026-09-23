@@ -55,6 +55,7 @@ def field_finder(readable_data: list, field_list: list):
 
 
 # Test!!
-# fields = ['ISOSpeedRatings', 'FNumber', 'ShutterSpeedValue', 'FocalLength']
-#camera_settings = field_finder(readable_data, fields)
+field_list = ['ISOSpeedRatings', 'FNumber', 'ShutterSpeedValue', 'FocalLength']
+camera_settings = field_finder(readable_data, field_list)
 # print(camera_settings)
+
