@@ -2,6 +2,8 @@
 from PIL import Image, UnidentifiedImageError
 from PIL.ExifTags import TAGS, GPSTAGS, GPS, IFD
 from pathlib import Path
+from pillow_heif import register_heif_opener
+register_heif_opener()
 
 
 photodata = []
