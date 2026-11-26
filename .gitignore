@@ -1,4 +1,6 @@
 venv/
-photos/
+Photos/
 __pycache__/
 *.pyc
+.DS_Store
+.vscode/
