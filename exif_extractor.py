@@ -1,19 +1,23 @@
 # Extracting exif from photo files
-from PIL import Image
-from PIL.ExifTags import TAGS, GPSTAGS, GPS
+from PIL import Image, UnidentifiedImageError
+from PIL.ExifTags import TAGS, GPSTAGS, GPS, IFD
 from pathlib import Path
-import os
 
 
 photodata = []
 
-for photofile in os.listdir("Photos"):
-    with Image.open(Path("Photos") / photofile) as file:
-        exif_data = file._getexif()
-        if exif_data is None:
-            continue
-        else: 
-            photodata.append(exif_data)
+for photofile in Path("Photos").iterdir():
+    try:
+        with Image.open(photofile) as img:
+            exif = img.getexif()
+            # Camera settings (ISO, FNumber, etc.) live in the Exif sub-IFD,
+            # so merge it with the top-level tags.
+            exif_data = dict(exif)
+            exif_data.update(exif.get_ifd(IFD.Exif))
+    except (UnidentifiedImageError, IsADirectoryError):
+        continue  # not an image, skip it
+    if exif_data:
+        photodata.append(exif_data)
 
 
 def exif_extractor(data: list):
