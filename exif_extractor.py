@@ -9,13 +9,13 @@ photodata = []
 for photofile in Path("Photos").iterdir():
     try:
         with Image.open(photofile) as img:
+
             exif = img.getexif()
-            # Camera settings (ISO, FNumber, etc.) live in the Exif sub-IFD,
-            # so merge it with the top-level tags.
             exif_data = dict(exif)
             exif_data.update(exif.get_ifd(IFD.Exif))
+
     except (UnidentifiedImageError, IsADirectoryError):
-        continue  # not an image, skip it
+        continue
     if exif_data:
         photodata.append(exif_data)
 
@@ -29,7 +29,7 @@ def exif_extractor(data: list):
         individual_photo = {}
 
         for tag, value in entry.items():
-            individual_photo[TAGS[tag]] = value
+            individual_photo[TAGS.get(tag, tag)] = value
         datalibrary.append(individual_photo)
 
     return datalibrary
@@ -59,7 +59,7 @@ def field_finder(readable_data: list, field_list: list):
 
 
 # Test!!
-field_list = ['ISOSpeedRatings', 'FNumber', 'ShutterSpeedValue', 'FocalLength']
+field_list = ['ISOSpeedRatings', 'FNumber', 'ExposureTime', 'FocalLength']
 camera_settings = field_finder(readable_data, field_list)
 # print(camera_settings)
 
